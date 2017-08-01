@@ -24,11 +24,54 @@ const clipHoleWidth = 15;
 const clipHoleHeight = 4;
 
  function main() {
-    return CSG.union([
-      placeholder(), // TODO
+    return [
+      thing1(),
       placeholder() // TODO
-    ]);
+    ];
  }
+
+// TODO: Rename
+function thing1() {
+  // TODO: This should be "hull"
+  return union([
+    body(),
+    topCornerCylinder().translate([holderHeight - holderRadius, holderRadius, 0]),
+    topCornerCylinder().translate([holderHeight - holderRadius, holderWidth - holderRadius, 0]),
+  ]).subtract([
+    badgeCardSlot(),
+    thing2(),
+  ]);
+}
+
+/** The main body shape of the model. Pieces are cut away from this. */
+function body() {
+  return cube({
+    size: [holderHeight - holderRadius, holderWidth, holderThickness]
+  });
+}
+
+/** Cylinder shape which defines the top corner of the body */
+function topCornerCylinder() {
+  return cylinder({
+    r: holderRadius,
+    h: holderThickness,
+    fn: 200,
+  });
+}
+
+/** Badge card slot to subtract away from model. */
+function badgeCardSlot() {
+  return cube({
+    size: [badgeHeight, badgeWidth, badgeThickness]
+  }).translate([holderWallSize, holderWallSize, holderWallSize]);
+}
+
+// TODO: Rename
+function thing2() {
+  return cube({
+    size: [badgeHeight / 2.25, badgeWidth, holderThickness * 2]
+  }).translate([holderWallSize, holderWallSize, holderWallSize]);
+}
 
 /** Placeholder function until the real thing is ready. */
 function placeholder() {
